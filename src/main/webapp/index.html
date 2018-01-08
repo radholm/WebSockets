@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocketsChat</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src ="websocket.js"></script>
+    </head>
+    <body>
+        <div id ="chats">
+            <div id="servermessages">
+                <p>Server messages</p>
+                <textarea id="serverMessages"></textarea>
+                <input id="test" type="hidden" value="" />
+            </div>
+            <div id="chatroom">
+            <p id="currentRoom"></p>
+            <textarea id="allMessages"></textarea>
+            </div>
+        </div>
+        <input type="text" id="messageToSend" value="" />
+        <input type="submit" value="send" onclick="sendMessage()" name="send" />
+        <div id="forms">
+            <p>Login</p>
+                    <input id="loginuser" type="text" value="" /></br>
+                    <input id="loginpass" type="text" value="" />
+                    <input type="submit" value="login" onclick="login()" />
+                    <p>Register</p>
+                    <input id="reguser" type="text" value="" /></br>
+                    <input id="regpass" type="text" value="" />
+                    <input type="submit" value="register" onclick="register()" />
+        </div>
+        <div id="chatrooms">
+            <p>Rooms</p>
+            <select id="list"></select>
+            <input type="submit" value="join chat" onclick="joinChat()" /></br>
+            <p>Users:</p>
+            <select id="chatroomParticipants"></select>
+            <input type="submit" value="chat to user" /></br></br>
+            <input type="submit" value="reload rooms and users" onclick="reload()" />
+        </div>
+        
+    </body>
+</html>

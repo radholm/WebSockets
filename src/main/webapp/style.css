@@ -1,0 +1,10 @@
+textarea {
+    width: 400px;
+    height: 150px;
+    resize: none;
+}
+#serverMessages {
+    width: 400px;
+    height: 70px;
+    resize: none;
+}
