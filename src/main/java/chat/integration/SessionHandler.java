@@ -51,7 +51,7 @@ public class SessionHandler {
         return builder;
     }
 
-    public void reload(Session session) {
+    public void refresh(Session session) {
         getRooms(session);
         getUsers(session);
     }
@@ -291,9 +291,5 @@ public class SessionHandler {
         } catch (IOException e) {
             removeSession(session);
         }
-    }
-
-    void reload(SessionHandler session) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

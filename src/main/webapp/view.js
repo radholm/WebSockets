@@ -71,7 +71,7 @@ function refresh() {
     };
     websocket.send(JSON.stringify(request));
 }
-function connected (event) {
+function connected(event) {
     var elem = document.getElementById("currentRoom");
     var elem2 = document.getElementById("serverMessages");
     elem.innerHTML = "Current chatroom: '" + event.room + "'";

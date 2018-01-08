@@ -56,8 +56,8 @@ public class WebSocketServer {
                 case "register":
                     sessionHandler.registerUser(session, jsonObject);
                     break;
-                case "reload":
-                    sessionHandler.reload(session);
+                case "refresh":
+                    sessionHandler.refresh(session);
                     break;
                 case "switchRoom":
                     sessionHandler.switchRoom(session, jsonObject);
