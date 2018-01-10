@@ -22,9 +22,9 @@ public class SessionHandler {
     private final String DEFAULT_CHATROOM = "Global";
 
     private final Map<Session, Long> sessionUserID = new HashMap<>();
-    private final Map<Session, GuestChatter> guests = new HashMap<>();
+    private final Map<Session, GuestChatter> guestUser = new HashMap<>();
     private final Map<Long, Session> userIDSession = new HashMap<>();
-    private final Map<Long, RegChatter> registeredUsers = new HashMap<>();
+    private final Map<Long, RegChatter> regUser = new HashMap<>();
     private final Map<String, Set<Session>> chatRooms = new HashMap<>();
     private final Set<Session> sessions = new HashSet<>();
 
@@ -57,10 +57,10 @@ public class SessionHandler {
     }
 
     private void getUsers(Session session) {
-        Set<Long> set = registeredUsers.keySet();
+        Set<Long> set = regUser.keySet();
         JsonArrayBuilder jsonarray = Json.createArrayBuilder();
         for (long l : set) {
-            jsonarray.add(registeredUsers.get(l).getName());
+            jsonarray.add(regUser.get(l).getName());
         }
         JsonObject obj = Json.createObjectBuilder()
                 .add("action", "users")
@@ -92,7 +92,7 @@ public class SessionHandler {
             return;
         }
         long ID = LongID;
-        RegChatter thisUser = registeredUsers.get(ID);
+        RegChatter thisUser = regUser.get(ID);
         String room = thisUser.getRoom();
         String newRoom = info.getString("room");
 
@@ -162,7 +162,7 @@ public class SessionHandler {
         sendToSession(session, obj);
         sendToAllSessions(newuser);
         sessions.add(session);
-        guests.put(session, guest);
+        guestUser.put(session, guest);
         chatRooms.get(DEFAULT_CHATROOM).add(session);
     }
 
@@ -172,14 +172,14 @@ public class SessionHandler {
         Long ID = sessionUserID.get(session);
         ChatInterface user;
         if (ID == null) {
-            user = guests.get(session);
+            user = guestUser.get(session);
             chatRooms.get(DEFAULT_CHATROOM).remove(session);
             msg.add("message", "'" + user.getName() + "' left");
-            guests.remove(session);
+            guestUser.remove(session);
             sendToRoom(DEFAULT_CHATROOM, msg.build());
             return;
         }
-        user = registeredUsers.get(ID);
+        user = regUser.get(ID);
         String room = user.getRoom();
         chatRooms.get(room).remove(session);
         msg.add("message", "'" + user.getName() + "' left");
@@ -195,7 +195,7 @@ public class SessionHandler {
         }
         String username = message.getString("username");
         String password = message.getString("password");
-        GuestChatter guest = guests.get(session);
+        GuestChatter guest = guestUser.get(session);
         RegChatter usr = controller.getUser(username);
 
         boolean verified = false, loggedIn = false;
@@ -209,7 +209,7 @@ public class SessionHandler {
         }
         if (!verified || loggedIn) {
             String response = loggedIn ? "already logged in" : "incorrect credentials";
-            msg.add("message", "login failed - " + response);
+            msg.add("message", "could not login - " + response);
             sendToSession(session, msg.build());
         } else {
             msg.add("message", "logged in as " + username);
@@ -217,10 +217,10 @@ public class SessionHandler {
                     .add("message", "'" + guest.getName() + "' is now '" + username + "'")
                     .build();
             sendToSession(session, msg.build());
-            guests.remove(session);
+            guestUser.remove(session);
             sendToRoom(guest.getRoom(), announcement);
             long ID = usr.getID();
-            registeredUsers.put(ID, usr);
+            regUser.put(ID, usr);
             sessionUserID.put(session, ID);
             userIDSession.put(ID, session);
         }
@@ -252,9 +252,9 @@ public class SessionHandler {
         Long ID = sessionUserID.get(session);
         ChatInterface user;
         if (ID == null) {
-            user = guests.get(session);
+            user = guestUser.get(session);
         } else {
-            user = registeredUsers.get(ID);
+            user = regUser.get(ID);
         }
         JsonObject msg = Json.createObjectBuilder()
                 .add("action", "response")
@@ -266,7 +266,7 @@ public class SessionHandler {
             sendToRoom(room, msg);
         } else {
             msg = newServerResponseBuilder()
-                    .add("message", "message failed, not registered to a chat room")
+                    .add("message", "message error, not connected to chatroom")
                     .build();
             sendToSession(session, msg);
         }

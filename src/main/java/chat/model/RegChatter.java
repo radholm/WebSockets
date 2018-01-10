@@ -16,10 +16,6 @@ public class RegChatter implements ChatInterface, Serializable {
     private String password;
     private String room = null;
 
-    public RegChatter() {
-
-    }
-
     public RegChatter(String name) {
         this.username = name;
         this.password = "";

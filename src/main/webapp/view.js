@@ -3,11 +3,11 @@ websocket.onmessage = onMessage;
 websocket.onclose = onClose;
 
 function setStatus(status) {
-    document.getElementById("test").value = status;
+    document.getElementById("standard").value = status;
 }
 
 function onClose(event) {
-    document.getElementById("allMessages").value = "Error - connection closed, error code: " + event.code;
+    document.getElementById("allMessages").value = "Error: " + event.code;
 }
 
 function sendMessage() {

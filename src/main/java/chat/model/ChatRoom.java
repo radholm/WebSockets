@@ -11,10 +11,6 @@ public class ChatRoom implements Serializable {
     private String roomName;
     private String owner;
 
-    public ChatRoom() {
-
-    }
-
     public ChatRoom(String name) {
         this.roomName = name;
         this.owner = null;
