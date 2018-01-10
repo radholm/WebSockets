@@ -29,6 +29,10 @@ public class RegChatter implements ChatInterface, Serializable {
     public long getID() {
         return this.ID;
     }
+    
+    public String getName() {
+        return this.username;
+    }
 
     public void setRoom(String room) {
         this.room = room;
@@ -36,10 +40,6 @@ public class RegChatter implements ChatInterface, Serializable {
 
     public String getRoom() {
         return this.room;
-    }
-
-    public String getName() {
-        return this.username;
     }
 
     public boolean verify(String pass) {
