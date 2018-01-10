@@ -25,16 +25,16 @@ public class ChatDAO {
         return true;
     }
 
+    public RegChatter getUser(Object PrimaryKey) {
+        return manager.find(RegChatter.class, PrimaryKey);
+    }
+
     public boolean addRoom(ChatRoom room) {
         if (manager.find(ChatRoom.class, room.getName()) != null) {
             return false;
         }
         manager.persist(room);
         return true;
-    }
-
-    public RegChatter getUser(Object PrimaryKey) {
-        return manager.find(RegChatter.class, PrimaryKey);
     }
 
     public List<String> getRooms() {

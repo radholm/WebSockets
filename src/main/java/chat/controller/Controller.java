@@ -11,21 +11,21 @@ import chat.model.RegChatter;
 public class Controller {
 
     @EJB
-    ChatDAO dao;
+    ChatDAO chatDAO;
 
     public boolean addUser(RegChatter user) {
-        return dao.addUser(user);
+        return chatDAO.addUser(user);
     }
 
     public RegChatter getUser(Object PrimaryKey) {
-        return dao.getUser(PrimaryKey);
-    }
-
-    public List<String> getRooms() {
-        return dao.getRooms();
+        return chatDAO.getUser(PrimaryKey);
     }
 
     public boolean addRoom(ChatRoom room) {
-        return dao.addRoom(room);
+        return chatDAO.addRoom(room);
+    }
+
+    public List<String> getRooms() {
+        return chatDAO.getRooms();
     }
 }
