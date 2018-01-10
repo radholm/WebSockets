@@ -44,9 +44,6 @@ public class WebSocketServer {
                 case "login":
                     sessionHandler.loginUser(session, jsonObject);
                     break;
-                case "logout":
-                    // TODO
-                    break;
                 case "send":
                     sessionHandler.sendMessage(session, jsonObject);
                     break;

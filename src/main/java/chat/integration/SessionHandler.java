@@ -84,21 +84,21 @@ public class SessionHandler {
     }
 
     public void switchRoom(Session session, JsonObject info) {
-        JsonObjectBuilder builder = newServerResponseBuilder();
+        JsonObjectBuilder jsonobject = newServerResponseBuilder();
         Long LongID = sessionUserID.get(session);
         if (LongID == null) {
-            builder.add("message", "unregistered users cannot switch rooms");
-            sendToSession(session, builder.build());
+            jsonobject.add("message", "unregistered users cannot switch rooms");
+            sendToSession(session, jsonobject.build());
             return;
         }
-        long ID = LongID.longValue();
+        long ID = LongID;
         RegChatter thisUser = registeredUsers.get(ID);
         String room = thisUser.getRoom();
         String newRoom = info.getString("room");
 
         if (room.equals(newRoom)) {
-            builder.add("message", "already chatting in room " + newRoom);
-            sendToSession(session, builder.build());
+            jsonobject.add("message", "already chatting in room " + newRoom);
+            sendToSession(session, jsonobject.build());
             return;
 
         }
@@ -111,19 +111,19 @@ public class SessionHandler {
         if (chatRooms.containsKey(newRoom)) {
             thisUser.setRoom(newRoom);
 
-            builder.add("message", "joined room '" + newRoom + "'");
+            jsonobject.add("message", "joined room '" + newRoom + "'");
             builder2.add("message", "user '" + thisUser.getName() + "' switched rooms");
             builder3.add("message", "user '" + thisUser.getName() + "' joined the room");
 
-            sendToSession(session, builder.build());
+            sendToSession(session, jsonobject.build());
             sendToRoom(room, builder2.build());
             sendToRoom(newRoom, builder3.build());
             chatRooms.get(newRoom).add(session);
         } else {
             RegChatter otherUser = controller.getUser(newRoom);
             if (otherUser == null || thisUser == null) {
-                builder.add("message", "users need to register to open chatroom");
-                sendToSession(session, builder.build());
+                jsonobject.add("message", "users need to register to open chatroom");
+                sendToSession(session, jsonobject.build());
                 return;
             }
             Set<Session> set = new HashSet<>();
@@ -138,12 +138,12 @@ public class SessionHandler {
             controller.addRoom(nRoom);
             chatRooms.put(nextRoom, set);
 
-            builder.add("message", "opened new room '" + nextRoom + "', user " + newRoom + " has been notified");
+            jsonobject.add("message", "opened new room '" + nextRoom + "', user " + newRoom + " has been notified");
             builder2.add("message", "user " + thisUser.getName() + " switched rooms");
             builder3.add("message", "user " + thisUser.getName() + " has started a new room '" + nextRoom + "' and invited you");
 
             thisUser.setRoom(newRoom);
-            sendToSession(session, builder.build());
+            sendToSession(session, jsonobject.build());
             sendToRoom(room, builder2.build());
             long otherUserID = otherUser.getID();
             sendToSession(userIDSession.get(otherUserID), builder3.build());
