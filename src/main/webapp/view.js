@@ -2,10 +2,6 @@ var websocket = new WebSocket("ws://localhost:8080/WebSocketsChat/actions");
 websocket.onmessage = onMessage;
 websocket.onclose = onClose;
 
-function setStatus(status) {
-    document.getElementById("standard").value = status;
-}
-
 function onClose(event) {
     document.getElementById("allMessages").value = "Error: " + event.code;
 }
@@ -18,7 +14,6 @@ function connected(event) {
 }
 
 function sendMessage() {
-    setStatus("sending");
     var msg = document.getElementById("messageToSend").value;
     var messageToSend = {
         action: "send",
@@ -29,7 +24,6 @@ function sendMessage() {
 }
 
 function onMessage(event) {
-    setStatus("onMessage");
     var action = JSON.parse(event.data);
     if (action.action === "response") {
         appendMessage(action);
@@ -53,7 +47,6 @@ function appendMessage(action) {
 }
 
 function login() {
-    setStatus("logging in");
     var usr = document.getElementById("loginuser").value;
     var pwd = document.getElementById("loginpass").value;
     var credentials = {
@@ -67,7 +60,6 @@ function login() {
 }
 
 function register() {
-    setStatus("registering");
     var user = document.getElementById("reguser").value;
     var pass = document.getElementById("regpass").value;
     var command = {
